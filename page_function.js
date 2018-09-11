@@ -18,7 +18,12 @@ function pageFunction(context) {
         if (line.startsWith("CITY")) {
             var labels = line.split(/\s+/).filter(Boolean);
             for (var j = 0; j < labels.length; j++) {
-                labels[j] = [labels[j], line.indexOf(labels[j])];
+                startPos = line.indexOf(labels[j]);
+                // for some reason, PRES is offset by 1?
+                if (labels[j] === 'PRES') {
+                    startPos--;
+                }
+                labels[j] = [labels[j], startPos];
             }
 
             while (!lines[++i].startsWith("$$")) {
@@ -26,7 +31,7 @@ function pageFunction(context) {
                 var cityData = {};
                 for (var k = 0; k < labels.length; k++) {
                     if (k == labels.length - 1) {
-                        citiyValue = line.slice[labels[k][1]];
+                        cityValue = line.slice[labels[k][1]];
                     } else {
                         cityValue = line.slice(labels[k][1], labels[k+1][1]).trim();
                     }
